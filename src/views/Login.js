@@ -31,7 +31,7 @@ export default function Login({logMeIn}) {
             <form onSubmit={handleSubmit}>
                 <input name='username' />
                 <input name='password' type='password' />
-                <button type='submit'>Sign Up</button>
+                <button type='submit'>Log In</button>
 
 
             </form>

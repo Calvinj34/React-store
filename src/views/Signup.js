@@ -1,56 +1,61 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { Navigate } from 'react-router-dom';
 
 export default function SignUp() {
+    const [redirect, setRedirect] = useState(false)
 
-    const handleSubmit = async (e) => {
+
+    const sendSignUpInfo = async (e) => {
         e.preventDefault();
-        const username = e.target.username.value;
-        const email = e.target.email.value;
-        const password = e.target.password.value;
-        const confirmPassword = e.target.confirmPassword.value;
 
-        const reqBody = {
-            username: username,
-            email: email,
-            password: password
+        if (e.target.password.value !== e.target.confirmPassword.value) { 
+            return
         }
 
-        const url = 'http://localhost:5000/api/signup'
-        const options = {
+        const res = await fetch('http://localhost:5000/api/signup', {
             method: "POST",
-            body: JSON.stringify(reqBody),
             headers: {
                 "Content-Type": 'application/json'
-            }
-        }
-        if (password!== confirmPassword) {
-            console.log('Wrong password')
-        }
-
-        const res = await fetch(url, options);
+            },
+            body: JSON.stringify({
+                username: e.target.username.value,
+                email: e.target.email.value,
+                password: e.target.password.value
+            })
+        });
         const data = await res.json();
         console.log(data)
-
+        if (data.status === 'ok') {
+            setRedirect(true)
+        }
     };
 
 
+    return redirect ? <Navigate to='/Login' /> : (
+        <form className='col-4' onSubmit={(e) => { sendSignUpInfo(e) }}>
+
+            <div className="mb-3">
+                <label htmlFor="exampleInputEmail1" className="form-label">Username</label>
+                <input type="text" className="form-control" name='username' />
+            </div>
 
 
-    return (
-        <div>
-            <h1>Sign Up</h1>
-            <form onSubmit={handleSubmit}>
-                <input name='username' />
-                <input name='email' />
-                <input name='password' type='password'/>
-                <input name='confirmPassword' type='password'/>
-                <button type='submit'>Sign Up</button>
+            <div className="mb-3">
+                <label htmlFor="exampleInputEmail1" className="form-label">Email address</label>
+                <input type="email" className="form-control" name='email' />
+                
+            </div>
+            <div className="mb-3">
+                <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
+                <input type="password" className="form-control" name='password' />
+            </div>
+            <div className="mb-3">
+                <label htmlFor="exampleInputPassword1" className="form-label">Confirm Password</label>
+                <input type="password" className="form-control" name='confirmPassword' />
+            </div>
 
-
-            </form>
-
-
-
-        </div>
+            <button type="submit" className="btn btn-primary">Create user</button>
+        </form>
     )
+
 }
