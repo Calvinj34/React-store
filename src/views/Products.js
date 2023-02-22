@@ -14,7 +14,7 @@ export default class Shop extends Component {
     const res = await fetch('http://127.0.0.1:5000/api/shop');
     const data = await res.json();
     console.log(data)
-    this.setState({ items: data });
+    this.setState({ items: data.items });
   };
 
   componentDidMount = () => {

@@ -20,7 +20,7 @@ export default class Nav extends Component {
               <Link className='nav-link' to="/cart">Cart</Link>
               <Link className='nav-link' to="/Products">Products</Link>
               <Link className="nav-link text-danger" to="/login" onClick={this.props.logMeOut}>Log Out</Link>
-              <p className='nav-link'>Logged in as {this.props.user.username} </p>
+              <p className='nav-link text-primary'>Logged in as{this.props.user.username} </p>
             </div>
           </div>
         </div>
